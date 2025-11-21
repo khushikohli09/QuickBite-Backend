@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  VENDOR
+  ADMIN
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  password    String
+  role        Role         @default(USER)
+  orders      Order[]
+  restaurants Restaurant[]
+
+  @@map("user")
+}
+
+model Restaurant {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  category     String
+  image        String
+  checkoutTime Int
+  isFeatured   Boolean    @default(false)
+  menuItems    MenuItem[]
+  categories   Category[]
+  orders       Order[]
+  owner        User?      @relation(fields: [ownerId], references: [id])
+  ownerId      Int?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("restaurant")
+}
+
+model Category {
+  id           Int         @id @default(autoincrement())
+  name         String
+  image        String?
+  featured     Boolean     @default(false)
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+  restaurantId Int?
+
+  @@map("category")
+}
+
+model MenuItem {
+  id           Int         @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  image        String
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId Int
+  isActive     Boolean     @default(true)
+  orderItems   OrderItem[]
+
+  @@map("menuitem")
+}
+
+model Order {
+  id               Int         @id @default(autoincrement())
+  user             User        @relation(fields: [userId], references: [id])
+  userId           Int
+  restaurant       Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurantId     Int
+  total            Float
+  status           String      @default("Preparing")
+  paymentMethod    String?     // <-- new optional field
+  deliveryName     String?     // <-- new optional field
+  deliveryPhone    String?     // <-- new optional field
+  deliveryAddress  String?
+  deliveryTime     DateTime?
+  deliveryStatus   String?     @default("Pending")
+  deliveryPersonId Int?
+  items            OrderItem[]
+  createdAt        DateTime    @default(now())
+
+  @@map("order")
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    Int
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
+  quantity   Int
+  price      Float
+
+  @@map("orderitem")
+}
