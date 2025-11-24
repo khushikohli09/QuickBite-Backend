@@ -9,7 +9,7 @@ const app = express();
 // Serve uploaded images
 app.use("/uploads", express.static("uploads"));
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "https://quickbitefrontend-mw9t.vercel.app"  }));
 app.use(express.json());
 
 // Routes
