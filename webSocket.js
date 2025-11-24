@@ -7,7 +7,7 @@ const initWebSocket = (server) => {
   if (io) return io;
 
   io = new Server(server, {
-    cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
+    cors: { origin: "*", methods: ["GET", "POST"] },
   });
 
   io.on("connection", (socket) => {
