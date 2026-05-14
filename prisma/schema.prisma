@@ -14,13 +14,17 @@ enum Role {
 }
 
 model User {
-  id          Int          @id @default(autoincrement())
+  id          Int              @id @default(autoincrement())
   name        String
-  email       String       @unique
+  email       String           @unique
   password    String
-  role        Role         @default(USER)
+  phone       String?
+  role        Role             @default(USER)
   orders      Order[]
   restaurants Restaurant[]
+  addresses   Address[]
+  memberships UserMembership[]
+  createdAt   DateTime         @default(now())
 
   @@map("user")
 }
@@ -77,9 +81,9 @@ model Order {
   restaurantId     Int
   total            Float
   status           String      @default("Preparing")
-  paymentMethod    String?     // <-- new optional field
-  deliveryName     String?     // <-- new optional field
-  deliveryPhone    String?     // <-- new optional field
+  paymentMethod    String?
+  deliveryName     String?
+  deliveryPhone    String?
   deliveryAddress  String?
   deliveryTime     DateTime?
   deliveryStatus   String?     @default("Pending")
@@ -100,4 +104,58 @@ model OrderItem {
   price      Float
 
   @@map("orderitem")
+}
+
+model Address {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  street    String
+  city      String
+  state     String
+  pincode   String
+  isDefault Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("address")
+}
+
+model MembershipPlan {
+  id               Int              @id @default(autoincrement())
+  name             String
+  price            Float
+  benefits         String
+  duration         Int
+
+  discountPercent  Int              @default(0)
+  minOrderAmount   Float            @default(0)
+
+  memberships      UserMembership[]
+
+  @@map("membership_plan")
+}
+model UserMembership {
+  id        Int            @id @default(autoincrement())
+  userId    Int
+  planId    Int
+  startDate DateTime       @default(now())
+  endDate   DateTime
+  status    String         @default("active")
+
+  user      User           @relation(fields: [userId], references: [id])
+  plan      MembershipPlan @relation(fields: [planId], references: [id])
+
+  @@map("user_membership")
+}
+
+model Coupon {
+  id              Int      @id @default(autoincrement())
+  code            String   @unique
+  discount        Float
+  minOrderAmount  Float
+  expiryDate      DateTime
+  isActive        Boolean  @default(true)
+  allowedPlan     String?
+
+  @@map("coupon")
 }
