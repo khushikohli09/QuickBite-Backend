@@ -9,7 +9,7 @@ const app = express();
 
 // 🔥 PRODUCTION CORS CONFIGURATION
 const allowedOrigins = process.env.NODE_ENV === "production"
-  ? [process.env.FRONTEND_URL, "https://quickbite-frontend.onrender.com"].filter(Boolean)
+  ? [process.env.FRONTEND_URL, "https://quickbitefrontend-3pdr.onrender.com"].filter(Boolean)
   : ["http://localhost:3000"];
 
 console.log("🔧 Allowed origins:", allowedOrigins);
