@@ -4,6 +4,7 @@ const router = express.Router();
 
 const {
   getVendorDashboard,
+  getVendorAnalytics,
   getVendorOrders,
   addRestaurant,
   addMenuItem,
@@ -11,13 +12,6 @@ const {
   deleteMenuItem,
 } = require(
   "../controllers/vendorController"
-);
-
-// ✅ Analytics Controller
-const {
-  getVendorAnalytics,
-} = require(
-  "../controllers/vendorAnalyticsController"
 );
 
 // ------------------------------------
