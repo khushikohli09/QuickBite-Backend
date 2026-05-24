@@ -128,13 +128,41 @@ app.use(
   require("./routes/couponRoutes")
 );
 
-// Chatbot Routes
-app.use(
-  "/api/chat",
-  require("./routes/chatbotRoutes")
+// -----------------------------------
+// CHATBOT ROUTES
+// -----------------------------------
+
+const chatbotRouter =
+  express.Router();
+
+const {
+  foodRecommendation,
+} = require(
+  "./controllers/chatbotController"
 );
 
-// ✅ Payment Routes
+chatbotRouter.post(
+  "/recommend",
+  foodRecommendation
+);
+
+app.use(
+  "/api/chat",
+  chatbotRouter
+);
+
+// ✅ OR if you already have chatbotRoutes file,
+// then use ONLY this instead:
+//
+// app.use(
+//   "/api/chat",
+//   require("./routes/chatbotRoutes")
+// );
+
+// -----------------------------------
+// PAYMENT ROUTES
+// -----------------------------------
+
 app.use(
   "/api/payment",
   require("./routes/paymentRoutes")
