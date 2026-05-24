@@ -1,5 +1,7 @@
 const express = require("express");
+
 const router = express.Router();
+
 const {
   getVendorDashboard,
   getVendorOrders,
@@ -7,13 +9,70 @@ const {
   addMenuItem,
   updateMenuItem,
   deleteMenuItem,
-} = require("../controllers/vendorController");
+} = require(
+  "../controllers/vendorController"
+);
 
-router.get("/dashboard", getVendorDashboard);       // Fetch vendor + restaurant + menu
-router.get("/orders", getVendorOrders);            // Fetch all orders for this vendor
-router.post("/restaurant", addRestaurant);          // Add restaurant
-router.post("/menu", addMenuItem);                  // Add menu item
-router.put("/menu/:id", updateMenuItem);            // Update menu item
-router.delete("/menu/:id", deleteMenuItem);         // Delete menu item
+// ✅ Analytics Controller
+const {
+  getVendorAnalytics,
+} = require(
+  "../controllers/vendorAnalyticsController"
+);
+
+// ------------------------------------
+// DASHBOARD
+// ------------------------------------
+
+router.get(
+  "/dashboard",
+  getVendorDashboard
+);
+
+// ------------------------------------
+// ORDERS
+// ------------------------------------
+
+router.get(
+  "/orders",
+  getVendorOrders
+);
+
+// ------------------------------------
+// ANALYTICS
+// ------------------------------------
+
+router.get(
+  "/analytics",
+  getVendorAnalytics
+);
+
+// ------------------------------------
+// RESTAURANT
+// ------------------------------------
+
+router.post(
+  "/restaurant",
+  addRestaurant
+);
+
+// ------------------------------------
+// MENU
+// ------------------------------------
+
+router.post(
+  "/menu",
+  addMenuItem
+);
+
+router.put(
+  "/menu/:id",
+  updateMenuItem
+);
+
+router.delete(
+  "/menu/:id",
+  deleteMenuItem
+);
 
 module.exports = router;
