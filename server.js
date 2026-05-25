@@ -27,7 +27,7 @@ app.use("/api/coupons", require("./routes/couponRoutes"));
 
 // ✅ CHATBOT + RECOMMENDATION ROUTES
 app.use("/api/chat", require("./routes/chatbotRoutes"));
-app.use("/api/recommend", require("./routes/FoodRoutes"));
+app.use("/api/recommend", require("./routes/foodRoutes"));
 
 // ---------------- HEALTH ----------------
 app.get("/health", (req, res) => {
